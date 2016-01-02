@@ -15,6 +15,7 @@ use Toolbox\Library\ApplicationSettings\SettingsHelperFactory;
 use Toolbox\Library\Calendar\DayNameHelper;
 use Toolbox\Library\Countries\CountriesService;
 use Toolbox\Library\Countries\CountriesServiceFactory;
+use Toolbox\Library\Countries\CountryNameHelperFactory;
 use Toolbox\Library\Currency\CurrencyFormatHelperFactory;
 use Toolbox\Library\Currency\CurrencyMapper;
 use Toolbox\Library\Currency\CurrencyMapperFactory;
@@ -65,7 +66,8 @@ return [
             'NotificationCountHelper' => NotificationCountHelperFactory::class,
             'NotificationHelper'      => NotificationHelperFactory::class,
             'CurrencyFormatHelper'    => CurrencyFormatHelperFactory::class,
-            'SettingHelper'           => SettingsHelperFactory::class
+            'SettingHelper'           => SettingsHelperFactory::class,
+            'CountryNameHelper'       => CountryNameHelperFactory::class,
         ]
     ],
     'router'             => [
