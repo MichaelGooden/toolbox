@@ -1,0 +1,62 @@
+<?php $this->layout('layout/admin');?>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            Notifications
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="<?=$this->url('notifications/overview');?>">Notifications</a>
+                <i class="fa fa-angle-right"></i>
+                <a>Overview</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<?php
+$this->FlashMessengerHelper();
+?>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-advance table-hover">
+        <thead>
+        <tr>
+            <th width="5%">
+                #
+            </th>
+            <th>
+                Message
+            </th>
+            <th>
+                Date
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ( $paginator AS $notification ) { ?>
+            <tr>
+                <td>
+                    <?php echo $notification->getId(); ?>
+                </td>
+                <td>
+                    <?php echo $notification->getMessage(); ?>
+                </td>
+                <td>
+                    <?php echo $notification->getCreated()->format('d M, Y H:i:s'); ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+<div class="margin-top-20">
+    <?php
+        echo $this->paginationControl(
+            $this->paginator,
+            'sliding',
+            array('paginator/1','ApplicationService'),
+            array('route' => 'notifications/view')
+        );
+    ?>
+</div>

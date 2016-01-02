@@ -1,255 +1,131 @@
 <?php
 namespace Toolbox;
 /**
- * Doctrine Gui
- *
- * @author Brendan <b.nash at southeaster dot com>
- *
+ * Toolbox
+ * @author Brendan <b.nash at southeaster dot com
  * @Contributors:
- *
  */
-
-use DoctrineGui\Form\Factory\GenerateJwtFieldsetFactory;
-use DoctrineGui\Form\Factory\ScopeFieldsetFactory;
-use DoctrineGui\Form\Factory\ScopeFormFactory;
-use DoctrineGui\Form\GenerateJwtFieldset;
-use DoctrineGui\Controller\DoctrineGuiController;
-use DoctrineGui\Controller\Factory\DoctrineGuiControllerFactory;
-use DoctrineGui\Form\ClientFieldset;
-use DoctrineGui\Form\ClientForm;
-use DoctrineGui\Form\Factory\ClientFieldsetFactory;
-use DoctrineGui\Form\Factory\ClientFormFactory;
-use DoctrineGui\Form\Factory\JwtFieldsetFactory;
-use DoctrineGui\Form\Factory\JwtFormFactory;
-use DoctrineGui\Form\JwtFieldset;
-use DoctrineGui\Form\JwtForm;
-use DoctrineGui\Form\ScopeFieldset;
-use DoctrineGui\Form\ScopeForm;
-use DoctrineGui\InputFilter\ClientFilter;
-use DoctrineGui\InputFilter\JwtFilter;
-use DoctrineGui\Service\AccessTokenService;
-use DoctrineGui\Service\ClientService;
-use DoctrineGui\Service\Factory\AccessTokenServiceFactory;
-use DoctrineGui\Service\Factory\ClientServiceFactory;
-use DoctrineGui\Service\Factory\JwtServiceFactory;
-use DoctrineGui\Service\Factory\ScopeServiceFactory;
-use DoctrineGui\Service\JwtService;
-use DoctrineGui\Service\ScopeService;
-use DoctrineGui\View\Helper\DoctrineGuiNavHelper;
-use DoctrineGui\View\Helper\FlashMessageHelper;
+use Toolbox\Controller\Factory\ToolboxControllerFactory;
+use Toolbox\Controller\ToolboxController;
+use Toolbox\Library\ApplicationSettings\ApplicationSettings;
+use Toolbox\Library\ApplicationSettings\ApplicationSettingsFactory;
+use Toolbox\Library\ApplicationSettings\AppSettingService;
+use Toolbox\Library\ApplicationSettings\AppSettingServiceFactory;
+use Toolbox\Library\ApplicationSettings\SettingsHelperFactory;
+use Toolbox\Library\Calendar\DayNameHelper;
+use Toolbox\Library\Countries\CountriesService;
+use Toolbox\Library\Countries\CountriesServiceFactory;
+use Toolbox\Library\Currency\CurrencyFormatHelperFactory;
+use Toolbox\Library\Currency\CurrencyMapper;
+use Toolbox\Library\Currency\CurrencyMapperFactory;
+use Toolbox\Library\ExRates\ExchangeRateService;
+use Toolbox\Library\ExRates\ExchangeRateServiceFactory;
+use Toolbox\Library\Mail\Options\ModuleOptions;
+use Toolbox\Library\Mail\Options\ModuleOptionsFactory;
+use Toolbox\Library\Mail\Service\MailService;
+use Toolbox\Library\Mail\Service\MailServiceFactory;
+use Toolbox\Library\Notifications\NotificationCountHelperFactory;
+use Toolbox\Library\Notifications\NotificationHelperFactory;
+use Toolbox\Library\Notifications\NotificationService;
+use Toolbox\Library\Notifications\NotificationServiceFactory;
+use Toolbox\Library\Notifications\NotificationsLogger;
+use Toolbox\Library\Notifications\NotificationsLoggerFactory;
 
 return [
     'controllers' => [
         'factories' => [
-            DoctrineGuiController::class => DoctrineGuiControllerFactory::class,
+            ToolboxController::class => ToolboxControllerFactory::class,
         ]
     ],
     'service_manager'    => [
         'factories'  => [
-            ClientService::class => ClientServiceFactory::class,
-            JwtService::class => JwtServiceFactory::class,
-            ScopeService::class => ScopeServiceFactory::class,
-            AccessTokenService::class => AccessTokenServiceFactory::class
-        ]
-    ],
-    'form_elements' => [
-        'factories' => [
-            ClientForm::class => ClientFormFactory::class,
-            ClientFieldset::class => ClientFieldsetFactory::class,
-            JwtFieldset::class => JwtFieldsetFactory::class,
-            JwtForm::class => JwtFormFactory::class,
-            GenerateJwtFieldset::class => GenerateJwtFieldsetFactory::class,
-            ScopeFieldset::class => ScopeFieldsetFactory::class,
-            ScopeForm::class => ScopeFormFactory::class
-        ]
-    ],
-    'input_filters'      => [
-        'invokables' => [
-            'ClientFilter' => ClientFilter::class,
-            'JwtClientFilter' => JwtFilter::class
-        ]
-    ],
-    'view_helpers' => [
-        'invokables' => [
-            'FlashMessageHelper' => FlashMessageHelper::class,
-            'DoctrineGuiNavHelper' => DoctrineGuiNavHelper::class
-        ]
-    ],
-    'view_helper_config' => [
-        'flashmessenger' => [
-            'message_open_format' => '<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><ul><li>',
-            'message_close_string' => '</li></ul></div>',
-            'message_separator_string' => '</li><li>'
+            NotificationService::class => NotificationServiceFactory::class,
+            NotificationsLogger::class => NotificationsLoggerFactory::class,
+            CurrencyMapper::class => CurrencyMapperFactory::class,
+            ExchangeRateService::class => ExchangeRateServiceFactory::class,
+            MailService::class   => MailServiceFactory::class,
+            ModuleOptions::class => ModuleOptionsFactory::class,
+            ApplicationSettings::class  => ApplicationSettingsFactory::class,
+            CountriesService::class => CountriesServiceFactory::class,
+            AppSettingService::class => AppSettingServiceFactory::class
         ]
     ],
     //Little faster setting templates like this
     'view_manager'       => [
         'template_map' => [
-            'doctrine-gui/doctrine-gui/overview' => __DIR__ . '/../view/overview.phtml',
-            'doctrine-gui/doctrine-gui/games' => __DIR__ . '/../view/games.phtml',
-            'doctrine-gui/doctrine-gui/clients' => __DIR__ . '/../view/clients.phtml',
-            'doctrine-gui/doctrine-gui/test-jwt' => __DIR__ . '/../view/test-jwt.phtml',
-            'doctrine-gui/doctrine-gui/client-manage' => __DIR__ . '/../view/client-manage.phtml',
-            'doctrine-gui/doctrine-gui/manage-key' => __DIR__ . '/../view/manage-key.phtml',
-            'doctrine-gui/doctrine-gui/scopes' => __DIR__ . '/../view/scopes.phtml',
-            'doctrine-gui/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'toolbox/toolbox/notifications' => __DIR__ . '/../view/notifications/overview.phtml',
+            'toolbox/toolbox/view'   => __DIR__ . '/../view/notifications/view.phtml'
         ]
     ],
-    'asset_manager' => [
-        'caching' => [
-            'default' => [
-                'cache' => 'FilePath',  // Apc, FilePath, FileSystem etc.
-                'options' => [
-                    'dir' => 'public'
-                ]
-            ],
+    'view_helpers'  => [
+        'invokables'    => [
+            'DayNameHelper'           => DayNameHelper::class,
         ],
-        'resolver_configs' => [
-            'paths' => [
-                __DIR__ . '/../assets',
-            ]
-
-        ],
+        'factories' => [
+            'NotificationCountHelper' => NotificationCountHelperFactory::class,
+            'NotificationHelper'      => NotificationHelperFactory::class,
+            'CurrencyFormatHelper'    => CurrencyFormatHelperFactory::class,
+            'SettingHelper'           => SettingsHelperFactory::class
+        ]
     ],
     'router'             => [
         'routes' => [
-            'zf-oauth-doctrine-gui' => [
+            'notifications' => [
                 'type' => 'literal',
                 'options' => [
-                    'route' => '/zf-oauth-doctrine-gui',
-
+                    'route' => '/notifications',
+                    'defaults' => [
+                        'controller' => ToolboxController::class,
+                        'action'     => 'notifications'
+                    ]
                 ],
-                'may_terminate' => false,
+
+                'may_terminate' => true,
                 'child_routes' => [
                     'overview' => [
-                        'type' => 'Literal',
+                        'type'    => 'Literal',
                         'options' => [
-                            'route' => '/overview',
+                            'route'       => '/overview',
                             'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'overview',
+                                'controller' => ToolboxController::class,
+                                'action'     => 'notifications'
                             ],
-                        ]
+                        ],
                     ],
-                    'clients' => [
-                        'type' => 'Literal',
-                        'options' => [
-                            'route' => '/clients',
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'clients',
-                            ],
-                        ]
-                    ],
-                    'scopes' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/scopes[/:scope_id]',
-                            'constraints' => [
-                                'scope_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'scopes',
-                            ],
-                        ]
-                    ],
-                    'scope-delete' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/scope-delete/:scope_id',
-                            'constraints' => [
-                                'scope_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'scope-delete',
-                            ],
-                        ]
-                    ],
-                    'scope-toggle' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/scope-toggle/:scope_id',
-                            'constraints' => [
-                                'scope_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'scope-toggle',
-                            ],
-                        ]
-                    ],
-                    'test-jwt' => [
+                    'view' => [
                         'type'    => 'Segment',
                         'options' => [
-                            'route'    => '/test-jwt/:jwt_id/:client_id',
-                            'constraints' => [
-                                'jwt_id' => '[0-9]+',
-                                'client_id' => '[0-9]+',
-                            ],
+                            'route'       => '/view/type_id/:type_id[/page/:page][/count/:count]',
                             'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action'  => 'test-jwt',
+                                'controller' => ToolboxController::class,
+                                'action'     => 'view'
                             ],
-                        ]
+                            'constraints' => [
+                                'type_id' => '[0-9]+',
+                                'page'    => '[0-9]+',
+                                'count'   => '[0-9]+',
+                            ],
+                        ],
                     ],
-                    'manage-key' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route'    => '/manage-key[/:client_id]/:jwt_id',
-                            'constraints' => [
-                                'jwt_id' => '[0-9]+',
-                                'client_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'manage-key',
-                            ],
-                        ]
-                    ],
-                    'delete-jwt-key' => [
-                        'type'    => 'Segment',
-                        'options' => [
-                            'route'  => '/delete-jwt-key/:jwt_id',
-                            'constraints' => [
-                                'jwt_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'delete-jwt-key',
-                            ],
-                        ]
-                    ],
-                    'delete-client' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/delete-client/:client_id',
-                            'constraints' => [
-                                'client_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'delete-client',
-                            ],
-                        ]
-                    ],
-                    'client-manage' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/client-manage/[:client_id]',
-                            'constraints' => [
-                                'client_id' => '[0-9]+'
-                            ],
-                            'defaults' => [
-                                'controller' => DoctrineGuiController::class,
-                                'action' => 'client-manage',
-                            ],
-                        ]
-                    ]
 
                 ]
-            ]
+            ],
         ]
+    ],
+    'doctrine'           => [
+        'driver' => [
+            'application_driver'  => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../src/Toolbox/Entity'
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Toolbox\Entity' => 'application_driver'
+                ]
+            ]
+        ],
     ]
 ];

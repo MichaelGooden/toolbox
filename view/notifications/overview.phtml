@@ -1,0 +1,87 @@
+<?php $this->layout('layout/admin');?>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            Notifications
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+
+            <li>
+                <i class="fa fa-home"></i>
+                <a>Notifications</a>
+                <i class="fa fa-angle-right"></i>
+                <a>Overview</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<?php $this->FlashMessengerHelper(); ?>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-advance table-hover">
+        <thead>
+        <tr>
+            <th width="5%">
+                #
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                24 hours
+            </th>
+            <th>
+                Options
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                All notifications
+            </td>
+            <td>
+                <?php echo $this->NotificationCountHelper(); ?>
+            </td>
+            <td>
+                <?php echo $this->NotificationCountHelper( 24 , null ); ?>
+            </td>
+            <td>
+                <a class="btn default btn-xs green" href="<?=$this->url('notifications/view' , array( 'type_id' => 0 ));?>">
+                    <i class="fa fa-plus"></i> View</a>
+            </td>
+
+        </tr>
+        <?php
+        foreach ( $notifications AS $key => $notification ) { ;?>
+            <tr>
+                <td>
+                    <?php echo $key; ?>
+                </td>
+                <td>
+                    <?php echo $notification; ?>
+                </td>
+                <td>
+                    <?php echo $this->NotificationCountHelper( null , $key ); ?>
+                </td>
+                <td>
+                    <?php echo $this->NotificationCountHelper( 24 , $key ); ?>
+                </td>
+
+                <td>
+                    <a class="btn default btn-xs green" href="<?=$this->url('notifications/view' , array( 'type_id' => $key ));?>">
+                        <i class="fa fa-plus"></i> View</a>
+                </td>
+
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>

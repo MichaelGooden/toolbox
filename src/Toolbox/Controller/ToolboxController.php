@@ -8,8 +8,8 @@ namespace Toolbox\Controller;
  *
  */
 
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Form\FormInterface;
+use Toolbox\Library\Notifications\NotificationService;
+use Toolbox\Library\Notifications\NotificationsLogger;
 use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -18,18 +18,34 @@ class ToolboxController extends AbstractActionController
 {
 
     public function __construct(
-
+        NotificationsLogger $notificationsLogger,
+        NotificationService $notificationService
     ) {
+        $this->notificationsLogger = $notificationsLogger;
+        $this->notificationService = $notificationService;
     }
 
-    /**
-     * View the clients
-     * @return Response
-     */
-    public function overviewAction()
+    public function notificationsAction()
     {
+        $notifications = $this->notificationsLogger->getNotificationTypes();
 
-        return new ViewModel([]);
+        return new ViewModel(
+            array( 'notifications' => $notifications )
+        );
+    }
+
+    public function viewAction()
+    {
+        $type_id = (int) $this->params()->fromRoute('type_id', 0);
+        $page_id = (int) $this->params()->fromRoute('page', 1);
+        $count   = (int) $this->params()->fromRoute('count', 20);
+
+        $data = $this->notificationService->getPaged( $page_id , $count , $type_id );
+
+        return new ViewModel(
+            array( 'paginator' => $data )
+        );
+
     }
 
 
