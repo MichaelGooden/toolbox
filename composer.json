@@ -14,7 +14,7 @@
             "Toolbox\\": "src/"
         },
         "classmap": [
-            "./Module.php"
+            "Module.php"
         ]
     }
 }
