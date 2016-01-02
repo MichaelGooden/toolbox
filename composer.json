@@ -1,0 +1,20 @@
+{
+    "name": "chateaux/toolbox",
+    "description": "General and helpful tools for ZF2 applications",
+    "license": "proprietary",
+    "keywords": [
+        "toolbox"
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5"
+    },
+    "autoload": {
+        "psr-0": {
+            "Toolbox\\": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
