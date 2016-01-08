@@ -76,7 +76,8 @@ class CurrencyMapper
     }
 
     /**
-     * You can update this to pull the default value from the configs...
+     * You can update this to pull the default value from the configs.
+     * The default currency MUST be the BASE currency i.e. the left or from currency in your db table
      * e.g EUR
      * @return mixed
      */
@@ -114,52 +115,164 @@ class CurrencyMapper
 
     /**
      * This returns the exchange rate between two given currencies
+     * We check for: base -> variable, variable -> base, variable -> variable, base -> base
+     *
+     * TABLE STRUCTURE:
+    +----+----------------------+------------------------+--------+---------+
+    | id | from_currency (base) | to_currency (variable) | value  | inverse |
+    +----+----------------------+------------------------+--------+---------+
+    |  1 | EUR                  | GBP                    | 0.744  | 1.34    |
+    |  2 | EUR                  | USD                    | 1.0881 | 0.919   |
+    |  3 | EUR                  | ZAR                    | 17.44  | 0.0573  |
+    +----+----------------------+------------------------+--------+---------+
+     *
      * @param $from_currency
      * @param $to_currency
      * @return bool|float|int
      */
     public function getExchangeRate( $from_currency , $to_currency )
     {
+
+        /**
+         * If currencies are the same: base -> base or variable -> variable (makes no difference, we always return 1)
+         */
         if ($from_currency == $to_currency)
         {
             return 1;
         }
 
-        //Check if we have a FROM
-        $fromObject = $this->exchangeRateService->findOneByFromCurrency($from_currency);
+        $base_currency = $this->getDefaultCurrency();
 
-        if ( ! $fromObject instanceof ExchangeRate )
+        if ($base_currency == '')
         {
+            return false;
+        }
+
+        $currency_array = [$from_currency,$to_currency];
+
+        $conversion_type = false;
+
+        $toObject   = false;
+        $fromObject = false;
+
+        /**
+         * Check conversion type
+         */
+        if (in_array($base_currency,$currency_array))
+        {
+
+            if ($from_currency == $base_currency)
+            {
+                //This is a base to variable conversion
+                $conversion_type = 1;
+            }
+
+            if ($to_currency == $base_currency)
+            {
+                //This is a variable to base conversion
+                $conversion_type = 2;
+            }
+
+        } else {
+            //We have a variable to variable conversion
+            $conversion_type = 3;
+        }
+
+        if (!$conversion_type)
+        {
+            return false;
+        }
+
+        /**
+         * Make sure we have objects for the from and to currencies in the table
+         */
+        if (in_array($conversion_type,[1,2]))
+        {
+            //From currency will be "base" and to currency will be variable, make sure we have the to_currency
+            if ($conversion_type == 1)
+            {
+                $toObject =  $this->exchangeRateService->findOneByToCurrency($to_currency);
+
+                if ( ! $toObject instanceof ExchangeRate )
+                {
+                    return false;
+                }
+
+            }
+
+            //To currency is base and the from currency is variable, check the from_currency
+            if ($conversion_type == 2)
+            {
+                $fromObject = $this->exchangeRateService->findOneByToCurrency($from_currency);
+
+                if ( ! $fromObject instanceof ExchangeRate )
+                {
+                    return false;
+                }
+
+            }
+
+        }
+        /**
+         * We are dealing with a variable to variable conversion so we must check that both from and to exist
+         */
+        else {
             $fromObject = $this->exchangeRateService->findOneByToCurrency($from_currency);
+            $toObject   = $this->exchangeRateService->findOneByToCurrency($to_currency);
+
+            if ( ! $toObject instanceof ExchangeRate )
+            {
+                return false;
+            }
+
+            if ( ! $fromObject instanceof ExchangeRate )
+            {
+                return false;
+            }
+
         }
 
-        //Return false as we wont be able to match a pair
-        if ( ! $fromObject instanceof ExchangeRate )
+
+        /**
+         * Make sure a conversion type has been set
+         */
+        if (!$conversion_type)
         {
             return false;
         }
 
-        $toObject =  $this->exchangeRateService->findOneByToCurrency($to_currency);
+        switch ($conversion_type) {
+            case 1:
+                if (!$toObject)
+                {
+                    return false;
+                }
+                return $toObject->getValue();
+                break;
+            case 2:
+                if (!$fromObject)
+                {
+                    return false;
+                }
+                return $fromObject->getInverse();
+                break;
 
-        if ( ! $toObject instanceof ExchangeRate )
-        {
-            $toObject = $this->exchangeRateService->findOneByFromCurrency($to_currency);
+            case 3:
+                if ( (!$fromObject) OR (!$toObject) )
+                {
+                    return false;
+                }
+
+                if ($fromObject->getValue() == 0 OR $toObject->getValue() == 0)
+                {
+                    return false;
+                }
+                return 1 / $fromObject->getValue() * $toObject->getValue();
+                break;
         }
 
-        //Return false as we wont be able to match a pair
-        if ( ! $toObject instanceof ExchangeRate )
-        {
-            return false;
-        }
 
-        //if the objects are the same then we return the rate
-        if ( $fromObject->getId() == $toObject->getId() )
-        {
-            return $fromObject->getValue();
-        }
-
-        //if the objects are different we return the aggregated rate
-        return 1 / $fromObject->getValue() * $toObject->getValue();
+        return false;
 
     }
 
@@ -286,8 +399,4 @@ class CurrencyMapper
     }
 
 
-
 }
-
-
-
