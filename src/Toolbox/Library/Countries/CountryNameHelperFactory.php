@@ -1,7 +1,6 @@
 <?php
 namespace Toolbox\Library\Countries;
 
-use Application\View\Helper\CountryNameHelper;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
