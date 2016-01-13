@@ -15,7 +15,7 @@ class UsStatesServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $entityManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $countriesRepository = $entityManager->getRepository('Application\Entity\UsStates');
+        $countriesRepository = $entityManager->getRepository('Toolbox\Entity\UsStates');
 
         return new UsStatesService(
             $countriesRepository,
