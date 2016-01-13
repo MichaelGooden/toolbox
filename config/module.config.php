@@ -13,9 +13,13 @@ use Toolbox\Library\ApplicationSettings\AppSettingService;
 use Toolbox\Library\ApplicationSettings\AppSettingServiceFactory;
 use Toolbox\Library\ApplicationSettings\SettingsHelperFactory;
 use Toolbox\Library\Calendar\DayNameHelper;
+use Toolbox\Library\Countries\CanadaStatesService;
+use Toolbox\Library\Countries\CanadaStatesServiceFactory;
 use Toolbox\Library\Countries\CountriesService;
 use Toolbox\Library\Countries\CountriesServiceFactory;
 use Toolbox\Library\Countries\CountryNameHelperFactory;
+use Toolbox\Library\Countries\UsStatesService;
+use Toolbox\Library\Countries\UsStatesServiceFactory;
 use Toolbox\Library\Currency\CurrencyFormatHelperFactory;
 use Toolbox\Library\Currency\CurrencyMapper;
 use Toolbox\Library\Currency\CurrencyMapperFactory;
@@ -48,7 +52,9 @@ return [
             ModuleOptions::class => ModuleOptionsFactory::class,
             ApplicationSettings::class  => ApplicationSettingsFactory::class,
             CountriesService::class => CountriesServiceFactory::class,
-            AppSettingService::class => AppSettingServiceFactory::class
+            AppSettingService::class => AppSettingServiceFactory::class,
+            UsStatesService::class => UsStatesServiceFactory::class,
+            CanadaStatesService::class => CanadaStatesServiceFactory::class
         ]
     ],
     //Little faster setting templates like this
