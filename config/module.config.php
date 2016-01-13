@@ -45,7 +45,7 @@ return [
     ],
     'service_manager'    => [
         'invokables' => [
-            'ReferrerValidator' => ReferrerValidator::class
+            ReferrerValidator::class => ReferrerValidator::class
         ],
         'factories'  => [
             NotificationService::class => NotificationServiceFactory::class,
