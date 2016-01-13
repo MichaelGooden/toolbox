@@ -3,13 +3,6 @@ namespace Toolbox\Library\Calendar;
 
 class Calendar
 {
-
-    function __construct( ServiceLocatorInterface $sl ) {
-
-        $this->sl = $sl;
-
-    }
-
     /**
      * General day array
      * @return array
