@@ -12,10 +12,11 @@ use Zend\Mvc\Controller\AbstractActionController;
 class ReferrerValidator extends AbstractActionController
 {
 
-    public function __construct(
-        $settings
-    ) {
-        $this->settings = $settings;
+    public function __construct() {
+
+        $applicationConfig = $this->getServiceLocator()->get('config');
+        $this->settings = $applicationConfig['toolbox-settings']['default_affiliate'];
+
         $this->cookieService = new CookieService();
     }
 
