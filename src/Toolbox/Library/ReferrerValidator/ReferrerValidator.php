@@ -3,6 +3,7 @@ namespace Toolbox\Library\ReferrerValidator;
 
 use Toolbox\Library\Session\CookieService;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Pulls the data out of the bundle
@@ -12,9 +13,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 class ReferrerValidator extends AbstractActionController
 {
 
-    public function __construct() {
+    public function __construct(ServiceLocatorInterface $serviceLocator) {
 
-        $applicationConfig = $this->getServiceLocator()->get('config');
+        $applicationConfig = $serviceLocator->get('config');
         $this->settings = $applicationConfig['toolbox-settings']['default_affiliate'];
 
         $this->cookieService = new CookieService();
@@ -23,7 +24,7 @@ class ReferrerValidator extends AbstractActionController
     public function validate()
     {
 
-        $referrer = (isset($_GET['referrer'])) ? $_GET['eferrer'] : false;
+        $referrer = (isset($_GET['referrer'])) ? $_GET['referrer'] : false;
         $data = (isset($_GET['referrer_data'])) ? $_GET['referrer_data'] : null;
 
         /**
