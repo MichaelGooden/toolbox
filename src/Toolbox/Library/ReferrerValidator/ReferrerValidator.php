@@ -12,9 +12,15 @@ use Zend\Mvc\Controller\AbstractActionController;
 class ReferrerValidator extends AbstractActionController
 {
 
+    public function __construct(
+        $settings
+    ) {
+        $this->settings = $settings;
+        $this->cookieService = new CookieService();
+    }
+
     public function validate()
     {
-        $cookieService = new CookieService();
 
         $referrer = (isset($_GET['referrer'])) ? $_GET['eferrer'] : false;
         $data = (isset($_GET['referrer_data'])) ? $_GET['referrer_data'] : null;
@@ -37,11 +43,40 @@ class ReferrerValidator extends AbstractActionController
                 'value' => $referrerBundle
             ];
 
-            $cookieService->setCookie($params);
+            $this->cookieService->setCookie($params);
 
         }
 
         return;
+
+    }
+
+    /**
+     * Get the stored referrer information,
+     */
+    public function getReferrerInformation()
+    {
+        $cookie_data = $this->cookieService->decodeCookie();
+
+        if (is_null($cookie_data))
+        {
+            $referrer = $this->settings['affiliate_id'];
+            $data = $this->settings['data'];
+        } else {
+
+            if (strlen($cookie_data['referrer']) != 32 OR empty($cookie_data['referrer']) OR $cookie_data['referrer'] == '' OR $cookie_data['referrer'] == null)
+            {
+                $referrer = isset($this->settings['affiliate_id']) ? $this->settings['affiliate_id'] : '';
+                $data = isset($this->settings['data']) ? $this->settings['data'] : '';
+
+            } else {
+                $referrer = isset($cookie_data['referrer']) ? $cookie_data['referrer'] : '';
+                $data =  isset($cookie_data['data']) ? $cookie_data['data'] : '';
+            }
+
+        }
+
+        return ['referrer' => $referrer , 'data' => $data ];
 
     }
 

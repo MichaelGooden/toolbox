@@ -36,6 +36,7 @@ use Toolbox\Library\Notifications\NotificationServiceFactory;
 use Toolbox\Library\Notifications\NotificationsLogger;
 use Toolbox\Library\Notifications\NotificationsLoggerFactory;
 use Toolbox\Library\ReferrerValidator\ReferrerValidator;
+use Toolbox\Library\ReferrerValidator\ReferrerValidatorFactory;
 
 return [
     'controllers' => [
@@ -44,9 +45,6 @@ return [
         ]
     ],
     'service_manager'    => [
-        'invokables' => [
-            ReferrerValidator::class => ReferrerValidator::class
-        ],
         'factories'  => [
             NotificationService::class => NotificationServiceFactory::class,
             NotificationsLogger::class => NotificationsLoggerFactory::class,
@@ -59,6 +57,7 @@ return [
             AppSettingService::class => AppSettingServiceFactory::class,
             UsStatesService::class => UsStatesServiceFactory::class,
             CanadaStatesService::class => CanadaStatesServiceFactory::class,
+            ReferrerValidator::class => ReferrerValidatorFactory::class
         ]
     ],
     //Little faster setting templates like this
