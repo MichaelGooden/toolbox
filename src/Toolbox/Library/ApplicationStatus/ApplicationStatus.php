@@ -18,19 +18,11 @@ class ApplicationStatus
         $this->applicationSettings = $applicationSettings;
     }
 
+    /**
+     * @return array|bool
+     */
     public function check()
     {
-
-        $admin_mode = (isset($_GET['admin_mode'])) ? true : false;
-
-        /**
-         * If we are in admin mode, then we want to see the web page
-         */
-        if ($admin_mode)
-        {
-            return ['status' => true , 'message' => '' ];
-        }
-
         /**
          * Check the admin mode variables in the global config
          */
@@ -44,5 +36,6 @@ class ApplicationStatus
         return ['status' => $update_mode['is_live'] , 'message' => $update_mode['message'] ];
 
     }
+
 
 }
