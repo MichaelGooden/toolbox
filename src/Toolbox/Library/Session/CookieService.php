@@ -1,5 +1,6 @@
 <?php
 namespace Toolbox\Library\Session;
+use Toolbox\Library\ApplicationSettings\ApplicationSettings;
 
 /**
  * Use this service to set persistent cookies on a users machine
@@ -9,6 +10,16 @@ namespace Toolbox\Library\Session;
 
 class CookieService
 {
+    /**
+     * @param ApplicationSettings $applicationSettings
+     */
+    public function __construct(
+        ApplicationSettings $applicationSettings
+    )
+    {
+        $this->applicationSettings = $applicationSettings;
+    }
+
 
     /**
      * Create a new cookie
@@ -16,11 +27,14 @@ class CookieService
      */
     public function setCookie($params)
     {
+
+        $domain = $this->applicationSettings->getSettings('cookie_domain');
+
         $name = (isset($params['name'])) ? $params['name'] : 'referrer';
         $value = (isset($params['value'])) ? $params['value'] : '';
         $expire = (isset($params['expire'])) ? time() + $params['expire'] : time() +  365 * 60 * 60 * 24;
         $path = (isset($params['path'])) ? $params['path'] : '';
-        $domain = (isset($params['domain'])) ? $params['domain'] : 'gamblingtec.com';
+        $domain = (isset($params['domain'])) ? $params['domain'] : $domain;
         $secure = (isset($params['secure'])) ? $params['secure'] : 0;
         $httponly = (isset($params['httponly'])) ? $params['httponly'] : 1;
 

@@ -1,9 +1,9 @@
 <?php
 namespace Toolbox\Library\ReferrerValidator;
 
+use Toolbox\Library\ApplicationSettings\ApplicationSettings;
 use Toolbox\Library\Session\CookieService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Pulls the data out of the bundle
@@ -13,12 +13,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ReferrerValidator extends AbstractActionController
 {
 
-    public function __construct(ServiceLocatorInterface $serviceLocator) {
-
-        $applicationConfig = $serviceLocator->get('config');
-        $this->settings = $applicationConfig['toolbox-settings']['default_affiliate'];
-
-        $this->cookieService = new CookieService();
+    public function __construct(
+        ApplicationSettings $applicationSettings,
+        CookieService $cookierSerice
+    ) {
+        $this->cookieService = $cookierSerice;
+        $this->applicationSettings = $applicationSettings;
     }
 
     public function validate()
@@ -59,17 +59,18 @@ class ReferrerValidator extends AbstractActionController
     public function getReferrerInformation()
     {
         $cookie_data = $this->cookieService->decodeCookie();
+        $default_affiliate = $this->applicationSettings->getSettings('default_affiliate');
 
         if (is_null($cookie_data))
         {
-            $referrer = $this->settings['affiliate_id'];
-            $data = $this->settings['data'];
+            $referrer = $default_affiliate['affiliate_id'];
+            $data = $default_affiliate['affiliate_data'];
         } else {
 
             if (strlen($cookie_data['referrer']) != 32 OR empty($cookie_data['referrer']) OR $cookie_data['referrer'] == '' OR $cookie_data['referrer'] == null)
             {
-                $referrer = isset($this->settings['affiliate_id']) ? $this->settings['affiliate_id'] : '';
-                $data = isset($this->settings['data']) ? $this->settings['data'] : '';
+                $referrer = isset($default_affiliate['affiliate_id']) ? $default_affiliate['affiliate_id'] : '';
+                $data = isset($default_affiliate['affiliate_data']) ? $default_affiliate['affiliate_data'] : '';
 
             } else {
                 $referrer = isset($cookie_data['referrer']) ? $cookie_data['referrer'] : '';
