@@ -28,7 +28,7 @@ class ApplicationStatus
          */
         if ($admin_mode)
         {
-            return true;
+            return ['status' => true , 'message' => '' ];
         }
 
         /**
