@@ -14,7 +14,7 @@ class NotificationsLogger
     protected  $eventManager;
 
     /**
-     * @var \Application\Service\NotificationServiceInterface
+     * @var \Application\Service\NotificationService
      */
     protected  $notificationsService;
 
