@@ -36,6 +36,8 @@ use Toolbox\Library\Notifications\NotificationServiceFactory;
 use Toolbox\Library\Notifications\NotificationsLogger;
 use Toolbox\Library\Notifications\NotificationsLoggerFactory;
 use Toolbox\Library\ReferrerValidator\ReferrerValidator;
+use Toolbox\Library\ApplicationStatus\ApplicationStatus;
+use Toolbox\Library\ApplicationStatus\ApplicationStatusFactory;
 use Toolbox\Library\Session\CookieService;
 use Toolbox\Library\Session\CookieServiceFactory;
 
@@ -61,7 +63,8 @@ return [
             AppSettingService::class => AppSettingServiceFactory::class,
             UsStatesService::class => UsStatesServiceFactory::class,
             CanadaStatesService::class => CanadaStatesServiceFactory::class,
-            CookieService::class => CookieServiceFactory::class
+            CookieService::class => CookieServiceFactory::class,
+            ApplicationStatus::class => ApplicationStatusFactory::class
         ]
     ],
     //Little faster setting templates like this
