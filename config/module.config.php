@@ -25,6 +25,8 @@ use Toolbox\Library\Currency\CurrencyMapper;
 use Toolbox\Library\Currency\CurrencyMapperFactory;
 use Toolbox\Library\ExRates\ExchangeRateService;
 use Toolbox\Library\ExRates\ExchangeRateServiceFactory;
+use Toolbox\Library\ExRates\UpdateExchangeRate;
+use Toolbox\Library\ExRates\UpdateExchangeRateFactory;
 use Toolbox\Library\Mail\Options\ModuleOptions;
 use Toolbox\Library\Mail\Options\ModuleOptionsFactory;
 use Toolbox\Library\Mail\Service\MailService;
@@ -64,7 +66,8 @@ return [
             UsStatesService::class => UsStatesServiceFactory::class,
             CanadaStatesService::class => CanadaStatesServiceFactory::class,
             CookieService::class => CookieServiceFactory::class,
-            ApplicationStatus::class => ApplicationStatusFactory::class
+            ApplicationStatus::class => ApplicationStatusFactory::class,
+            UpdateExchangeRate::class => UpdateExchangeRateFactory::class
         ]
     ],
     //Little faster setting templates like this
