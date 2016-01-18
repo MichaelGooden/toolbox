@@ -13,64 +13,38 @@ class UpdateExchangeRate
     public function __construct(
         ExchangeRateService $exRateService
     ) {
-        $this->fetchExRate = new FetchExRateData();
+        $this->fetchExRate   = new ExchangeRateData();
         $this->exRateService = $exRateService;
     }
 
-    public function executeMethod( $from = null , $to = null , $rate = null )
+
+    /**
+     * We include the method required in order to update the rates
+     * @param $method
+     * @return bool
+     */
+    public function updateAll($method)
     {
+        $rates = [];
 
-        $route = 'updateSpecific';
-
-        if ( $from == null OR $to == null OR $rate == null )
+        if (method_exists($this->fetchExRate,$method))
         {
-            $route = 'updateAll';
+            $rates = $this->fetchExRate->$method();
         }
 
-        switch ( $route ) {
-
-            case 'updateAll':
-                return $this->updateAll();
-                break;
-
-            case 'updateSpecific':
-                return $this->updateSpecific( $from , $to , $rate );
-                break;
-
-            default:
-                return [];
-
+        if (empty($rates))
+        {
+            return false;
         }
 
-
-    }
-
-    /**
-     * The feed to get the rates from as per the ExRate / FetchExRateDataTmcInterface library
-     */
-    private function getRates()
-    {
-
-        //While it is possible to have multiple feeds, it becomes un-manageable, a feed based on a single rate EUR/* can
-        //be used to work out all ex-rate combinations i.e.: GBP/AUD wold be a matter of: EUR/GBP + EUR/AUD = (1EUR = 2GBP) + (1 EUR = 3 AUD) therefore: 2GBP = 3AUD thus 1GBP = 1.5AUD
-
-        return $this->fetchExRate->executeMethod(2);
-
-    }
-
-    /**
-     * Find all the ex rates in the feed
-     * @return array
-     */
-    private function updateAll()
-    {
-        $rates = $this->getRates();
+        $result = false;
 
         foreach ( $rates AS $row )
         {
-            $this->updateSpecific( $row['from'] , $row['to'] , $row['rate'] );
-            //@TODO Log a check here via a listener
+            $result = $this->updateSpecific( $row['from'] , $row['to'] , $row['rate'] );
         }
+
+        return $result;
 
     }
 
@@ -80,7 +54,7 @@ class UpdateExchangeRate
      * @param $exchangeRate
      * @return bool
      */
-    private function updateSpecific( $fromCurrency , $toCurrency , $exchangeRate )
+    public function updateSpecific( $fromCurrency , $toCurrency , $exchangeRate )
     {
         //Check both directions L2R = Left to Right, R2L = Right to Left
         $exRateObjectL2R = $this->exRateService->findFromToRate( $fromCurrency , $toCurrency );
