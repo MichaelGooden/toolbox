@@ -11,11 +11,9 @@ class ReferrerValidatorFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $realSl = $serviceLocator->getServiceLocator();
-
         return new ReferrerValidator(
-            $realSl->get(ApplicationSettings::class),
-            $realSl->get(CookieService::class)
+            $serviceLocator->get(ApplicationSettings::class),
+            $serviceLocator->get(CookieService::class)
         );
     }
 }
