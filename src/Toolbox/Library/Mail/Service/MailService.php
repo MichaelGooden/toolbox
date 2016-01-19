@@ -31,6 +31,10 @@ class MailService
 
     protected $mailTransport;
 
+    protected $mailBcc;
+
+    protected $mailCc;
+
 
     protected $renderer;
 
@@ -96,6 +100,10 @@ class MailService
         $mailMessage->setEncoding($this->mailEncoding);
         $mailMessage->setFrom($this->mailFrom);
         $mailMessage->setTo($this->mailTo);
+
+        $mailMessage->setBcc($this->mailBcc);
+        $mailMessage->setCc($this->mailCc);
+
         $mailMessage->setSubject($this->mailSubject);
 
         if (2 <= count($mimeBody->getParts())) {
@@ -265,6 +273,42 @@ class MailService
     public function getMailReplyTo()
     {
         return $this->mailReplyTo;
+    }
+
+    /**
+     * @param $mailBcc
+     * @return $this
+     */
+    public function setMailBcc($mailBcc)
+    {
+        $this->mailBcc = $mailBcc;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMailBcc()
+    {
+        return $this->mailBcc;
+    }
+
+    /**
+     * @param $mailCc
+     * @return $this
+     */
+    public function setMailCc($mailCc)
+    {
+        $this->mailCc = $mailCc;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMailCc()
+    {
+        return $this->mailCc;
     }
 
 
