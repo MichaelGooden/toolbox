@@ -41,6 +41,7 @@ use Toolbox\Library\Notifications\NotificationsLoggerFactory;
 use Toolbox\Library\ReferrerValidator\ReferrerValidator;
 use Toolbox\Library\ApplicationStatus\ApplicationStatus;
 use Toolbox\Library\ApplicationStatus\ApplicationStatusFactory;
+use Toolbox\Library\ReferrerValidator\ReferrerValidatorFactory;
 use Toolbox\Library\Session\CookieService;
 use Toolbox\Library\Session\CookieServiceFactory;
 
@@ -51,9 +52,6 @@ return [
         ]
     ],
     'service_manager'    => [
-        'invokables' => [
-            ReferrerValidator::class => ReferrerValidator::class
-        ],
         'factories'  => [
             NotificationService::class => NotificationServiceFactory::class,
             NotificationsLogger::class => NotificationsLoggerFactory::class,
@@ -68,7 +66,8 @@ return [
             CanadaStatesService::class => CanadaStatesServiceFactory::class,
             CookieService::class => CookieServiceFactory::class,
             ApplicationStatus::class => ApplicationStatusFactory::class,
-            UpdateExchangeRate::class => UpdateExchangeRateFactory::class
+            UpdateExchangeRate::class => UpdateExchangeRateFactory::class,
+            ReferrerValidator::class => ReferrerValidatorFactory::class
         ]
     ],
     //Little faster setting templates like this
