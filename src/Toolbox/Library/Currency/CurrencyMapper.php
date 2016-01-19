@@ -87,6 +87,15 @@ class CurrencyMapper
     }
 
     /**
+     * A list of default or sub-currencies (used in the menu bar)
+     * @return mixed
+     */
+    public function getDefaultCurrencies()
+    {
+        return [ 'ZAR' , 'USD' ,  'GBP' , 'EUR'  ];
+    }
+
+    /**
      * Supported currencies should be used as the root for any module that relies on currencies, i.e. the exchange rate module
      * @return mixed
      */
