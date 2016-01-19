@@ -1,12 +1,10 @@
 <?php
-namespace Application\Library\Session;
+namespace Toolbox\Library\Session;
 
 use Zend\View\Helper\AbstractHelper;
 
 
 class SessionHelper extends AbstractHelper {
-
-    protected $countriesService;
 
     public function __invoke( $value , $method = 'getDataValue' )
     {
