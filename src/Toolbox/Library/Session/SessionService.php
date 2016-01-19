@@ -105,15 +105,16 @@ class SessionService
     {
         $data = $this->getData();
 
-        if (isset($data[$key]))
+        if (!isset($data[$key]))
         {
-            unset($data[$key]);
+            return false;
         }
 
+        unset($data[$key]);
         $this->updateSessionData($data);
 
+        return true;
 
-        return false;
     }
 
 }
