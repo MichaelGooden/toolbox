@@ -124,9 +124,10 @@ class CurrencyMapper
     }
 
     /**
-     * Returns an actual currency symbol, $
+     * NOTATION: SYM = Symbol, ISO3 = EUR, ZAR... etc.
      * @param float $total
      * @param null $currency
+     * @param string $notation
      * @return string
      */
     public function formatCurrency( $total = 0.00 , $currency = null , $notation = 'SYM')
