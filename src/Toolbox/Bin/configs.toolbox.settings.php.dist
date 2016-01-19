@@ -1,0 +1,18 @@
+<?php
+return [
+    'toolbox-settings' => [
+        'from_email'        => 'support@example.com',
+        'no_reply_email'    => 'no-reply@example.com',
+        'app_name'          => 'Click Clouds',
+        'support_desk'      => 'http://helpdesk.example.com',
+        'support_email'     => 'support@example.com',
+        'default_currency'  => 'ZAR',
+        'charge_vat'        => false,
+        'vat_rate'          => 14,
+        'cookie_domain'     => 'example.com',
+        'application_status' => [
+            'is_live' => true,
+            'message' => 'We are busy updating the database - the site will be down for 20m'
+        ]
+    ],
+];
