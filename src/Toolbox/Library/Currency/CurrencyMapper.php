@@ -3,6 +3,7 @@ namespace Toolbox\Library\Currency;
 
 use Toolbox\Entity\ExchangeRate;
 use Toolbox\Library\ExRates\ExchangeRateService;
+use Toolbox\Library\Session\SessionService;
 
 class CurrencyMapper
 {
@@ -16,6 +17,7 @@ class CurrencyMapper
     ) {
         $this->exchangeRateService = $exchangeRateService;
         $this->defaultCurrency = $default_currency;
+        $this->sessionService = new SessionService();
     }
 
     /**
@@ -76,6 +78,41 @@ class CurrencyMapper
     }
 
     /**
+     * Retunrs the name of the currency
+     * @param $currency
+     * @return bool
+     */
+    public function getCurrencyName( $currency )
+    {
+        $nameArray = $this->getCurrencyNameArray();
+
+        if ( ! isset( $nameArray[$currency] ) )
+        {
+            return false;
+        }
+
+        return $nameArray[$currency];
+    }
+
+    /**
+     * i.e. 'GTQ' => Guatemala, Quetzales
+     * @return array
+     */
+    public function getCurrencyNameArray()
+    {
+        $currencies = $this->getAllCurrencies();
+
+        $nameArray  = [];
+
+        foreach ($currencies AS $key => $array)
+        {
+            $nameArray[$key] =  $array[0];
+        }
+
+        return $nameArray;
+    }
+
+    /**
      * You can update this to pull the default value from the configs.
      * The default currency MUST be the BASE currency i.e. the left or from currency in your db table
      * e.g EUR
@@ -87,12 +124,61 @@ class CurrencyMapper
     }
 
     /**
+     * Returns an actual currency symbol, $
+     * @param float $total
+     * @param null $currency
+     * @return string
+     */
+    public function formatCurrency( $total = 0.00 , $currency = null , $notation = 'SYM')
+    {
+        $currency = ($currency != null) ? $currency : $this->getDefaultCurrency();
+
+        /**
+         * Get the currency symbol
+         */
+        $symbol = $this->getCurrencySymbol($currency);
+
+        $total = round($total,2);
+        $total = sprintf ("%.2f", $total);
+
+        if ($notation == 'SYM')
+        {
+            return $symbol.$total;
+        }
+
+        if ($notation == 'ISO3')
+        {
+            return $currency.' '.$total;
+        }
+
+        return $currency.' '.$total;
+
+    }
+
+    /**
      * A list of default or sub-currencies (used in the menu bar)
      * @return mixed
      */
     public function getDefaultCurrencies()
     {
         return [ 'ZAR' , 'USD' ,  'GBP' , 'EUR'  ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSessionCurrency()
+    {
+
+        if ( $sessionCurrency = $this->sessionService->getDataValue('currency'))
+        {
+            return $sessionCurrency;
+
+        }
+
+        $currency_array =  $this->sessionService->setData('currency' , $this->getDefaultCurrency() );
+
+        return $currency_array['currency'];
     }
 
     /**

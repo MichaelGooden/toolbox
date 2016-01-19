@@ -29,6 +29,7 @@ class SessionService
     /**
      * @param $dataName
      * @param $dataValue
+     * @return array
      */
     public function setData($dataName, $dataValue)
     {
@@ -44,6 +45,8 @@ class SessionService
         $appendedData = array_merge( $currentData , $newData );
 
         $this->updateSessionData($appendedData);
+
+        return $appendedData;
 
     }
 
