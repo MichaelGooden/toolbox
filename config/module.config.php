@@ -23,6 +23,7 @@ use Toolbox\Library\Countries\UsStatesServiceFactory;
 use Toolbox\Library\Currency\CurrencyFormatHelperFactory;
 use Toolbox\Library\Currency\CurrencyMapper;
 use Toolbox\Library\Currency\CurrencyMapperFactory;
+use Toolbox\Library\Currency\CurrencyOptionsHelperFactory;
 use Toolbox\Library\ExRates\ExchangeRateService;
 use Toolbox\Library\ExRates\ExchangeRateServiceFactory;
 use Toolbox\Library\ExRates\UpdateExchangeRate;
@@ -87,6 +88,7 @@ return [
             'CurrencyFormatHelper'    => CurrencyFormatHelperFactory::class,
             'SettingHelper'           => SettingsHelperFactory::class,
             'CountryNameHelper'       => CountryNameHelperFactory::class,
+            'CurrencyOptionsHelper'   => CurrencyOptionsHelperFactory::class
         ]
     ],
     'router'             => [
