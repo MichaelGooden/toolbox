@@ -124,7 +124,7 @@ class MailService
             $transport->send($mailMessage);
             return true;
         } catch (\Exception $e) {
-            return false;
+            throw new \Exception($e);
         }
 
     }
