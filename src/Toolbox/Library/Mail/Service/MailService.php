@@ -101,8 +101,15 @@ class MailService
         $mailMessage->setFrom($this->mailFrom);
         $mailMessage->setTo($this->mailTo);
 
-        $mailMessage->setBcc($this->mailBcc);
-        $mailMessage->setCc($this->mailCc);
+        if ($this->mailBcc != '') {
+            $mailMessage->setBcc($this->mailBcc);
+        }
+
+        if ($this->mailCc != '')
+        {
+            $mailMessage->setCc($this->mailCc);
+        }
+
 
         $mailMessage->setSubject($this->mailSubject);
 
