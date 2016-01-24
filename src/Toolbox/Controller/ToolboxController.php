@@ -48,5 +48,19 @@ class ToolboxController extends AbstractActionController
 
     }
 
+    /**
+     * Used to test email notices
+     * @return Response
+     */
+    public function testNotificationsAction()
+    {
+
+        $this->notificationsLogger->addNotification(1,'Notification invoked via the notification test button.', true);
+
+        $this->flashMessenger()->addSuccessMessage('Test email sent');
+
+        return $this->redirect()->toRoute('notifications/overview');
+    }
+
 
 }
