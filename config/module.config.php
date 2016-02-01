@@ -42,6 +42,7 @@ use Toolbox\Library\ReferrerValidator\ReferrerValidator;
 use Toolbox\Library\ApplicationStatus\ApplicationStatus;
 use Toolbox\Library\ApplicationStatus\ApplicationStatusFactory;
 use Toolbox\Library\ReferrerValidator\ReferrerValidatorFactory;
+use Toolbox\Library\Session\CookieHelperFactory;
 use Toolbox\Library\Session\CookieService;
 use Toolbox\Library\Session\CookieServiceFactory;
 
@@ -87,7 +88,8 @@ return [
             'CurrencyFormatHelper'    => CurrencyFormatHelperFactory::class,
             'SettingHelper'           => SettingsHelperFactory::class,
             'CountryNameHelper'       => CountryNameHelperFactory::class,
-            'CurrencyOptionsHelper'   => CurrencyOptionsHelperFactory::class
+            'CurrencyOptionsHelper'   => CurrencyOptionsHelperFactory::class,
+            'CookieHelper'            => CookieHelperFactory::class
         ]
     ],
     'router'             => [
@@ -127,16 +129,6 @@ return [
                                 'page'    => '[0-9]+',
                                 'count'   => '[0-9]+',
                             ],
-                        ],
-                    ],
-                    'test' => [
-                        'type'    => 'Segment',
-                        'options' => [
-                            'route'       => '/test',
-                            'defaults' => [
-                                'controller' => ToolboxController::class,
-                                'action'     => 'test-notifications'
-                            ]
                         ],
                     ],
 
