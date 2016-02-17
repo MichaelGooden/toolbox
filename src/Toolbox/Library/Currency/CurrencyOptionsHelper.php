@@ -68,13 +68,13 @@ class CurrencyOptionsHelper extends AbstractHelper {
          * Set the display currency
          */
         if ($settings == 'SUPPORTED') {
-            $setCurrencyName = "<br/><br/>Currency:: ".$this->currencyMapper->getCurrencyName($setCurrency); //"<p><br/>Currency is set to: ".$setCurrency."</p>";
+            $setCurrencyName = "<br/><br/>Currency:: ".$this->currencyMapper->getCurrencyName($setCurrency);
         }  else {
             $setCurrencyName = " :: ".$setCurrency;
         }
 
         $returnString = '<li class="shop-currencies">';
-
+        $returnArray = [];
 
         $i = 1;
         foreach ($supportedCurrencies AS $currency)
@@ -87,6 +87,9 @@ class CurrencyOptionsHelper extends AbstractHelper {
             if ($setCurrency == $currency)
             {
                 $class = 'class="current"';
+                $returnArray[$i]['selected'] = true;
+            } else {
+                $returnArray[$i]['selected'] = false;
             }
 
             if ($settings = 'ALL') {
@@ -96,6 +99,8 @@ class CurrencyOptionsHelper extends AbstractHelper {
             }
 
             $returnString .= '<a href="#" id="'.$currency.'" data-currency="'.$currency.'" '.$class.'>'.$currencySymbol.'</a>';
+            $returnArray[$i]['currency_symbol'] = $currencySymbol;
+            $returnArray[$i]['currency'] = $currency;
 
             if ($i % 14 == 0)
             {
@@ -107,7 +112,7 @@ class CurrencyOptionsHelper extends AbstractHelper {
 
         $returnString .= ''.$setCurrencyName.'</li>';
 
-        return $returnString;
+        return ['string' => $returnString , 'array' => $returnArray];
 
     }
 }
