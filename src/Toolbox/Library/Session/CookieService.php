@@ -36,7 +36,7 @@ class CookieService
         $path = (isset($params['path'])) ? $params['path'] : '';
         $domain = (isset($params['domain'])) ? $params['domain'] : $domain;
         $secure = (isset($params['secure'])) ? $params['secure'] : 0;
-        $httponly = (isset($params['httponly'])) ? $params['httponly'] : 1;
+        $httponly = (isset($params['httponly'])) ? $params['httponly'] : 0;
 
         /**
          * Test whether the cookie exists before updating
@@ -46,10 +46,10 @@ class CookieService
             setcookie(
                 $name,
                 $value,
-                $expire ,
-                $path ,
-                $domain ,
-                $secure ,
+                $expire,
+                $path,
+                $domain,
+                $secure,
                 $httponly
             );
         }

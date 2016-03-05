@@ -35,14 +35,15 @@ class ReferrerValidator extends AbstractActionController
 
             $referrerBundle = [
                 'referrer' => $referrer,
-                'data' => is_array($data) ? json_encode($data) : $data
+                'data' => is_array($data) ? json_encode($data) : $data,
             ];
 
             $referrerBundle = json_encode($referrerBundle);
 
             $params = [
-                'name' => 'referrer',
-                'value' => $referrerBundle
+                'name'  => 'referrer',
+                'value' => $referrerBundle,
+                'path'  => '/',
             ];
 
             $this->cookieService->setCookie($params);
