@@ -51,7 +51,7 @@ class Authorise extends Client
         }
 
         $date = new \DateTime();
-        $interval = $data->expires_in - 60;
+        $interval = $data->expires_in;
         $date->add(new \DateInterval('PT' . $interval . 'S'));
 
         return [
