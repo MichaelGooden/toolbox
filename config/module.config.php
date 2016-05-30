@@ -116,6 +116,16 @@ return [
                             ],
                         ],
                     ],
+                    'test' => [
+                        'type'    => 'Literal',
+                        'options' => [
+                            'route'       => '/test',
+                            'defaults' => [
+                                'controller' => ToolboxController::class,
+                                'action'     => 'test-notifications'
+                            ],
+                        ],
+                    ],
                     'view' => [
                         'type'    => 'Segment',
                         'options' => [
