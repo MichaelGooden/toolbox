@@ -9,6 +9,8 @@ class ModuleOptions extends AbstractOptions
 
     protected $encoding;
 
+    protected $transport;
+
     /**
      * @param $charset
      * @return $this
@@ -43,5 +45,15 @@ class ModuleOptions extends AbstractOptions
     public function getEncoding()
     {
         return $this->encoding;
+    }
+
+    public function setTransport($transport)
+    {
+        $this->transport = $transport;
+    }
+
+    public function getTransport()
+    {
+        return $this->transport;
     }
 }

@@ -15,9 +15,12 @@ class MailServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $config = $serviceLocator->get('config')['toolbox_mail'];
+        $transport = \Zend\Mail\Transport\Factory::create($config['transport']);
         return new MailService(
             $serviceLocator->get('viewrenderer'),
-            $serviceLocator->get(ModuleOptions::class)
+            $serviceLocator->get(ModuleOptions::class),
+            $transport
         );
     }
 }
