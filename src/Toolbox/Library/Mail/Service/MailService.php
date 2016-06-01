@@ -104,6 +104,7 @@ class MailService
         $mailMessage->setBody($mimeBody);
         $mailMessage->setEncoding($this->mailEncoding);
         $mailMessage->setFrom($this->mailFrom);
+        $mailMessage->setSender($this->mailFrom);
         $mailMessage->setTo($this->mailTo);
 
         if ($this->mailBcc != '') {
