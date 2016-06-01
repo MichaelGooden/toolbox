@@ -4,6 +4,7 @@ namespace Toolbox\Library\Mail\Service;
 use Toolbox\Library\Mail\Options\ModuleOptions;
 use Zend\Mail\Message as MailMessage;
 
+use Zend\Mail\Transport\TransportInterface;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;
 use Zend\Mime\Message as MimeMessage;
@@ -38,11 +39,15 @@ class MailService
 
     protected $renderer;
 
+    protected $transport;
+
     public function __construct(
         PhpRenderer $phpRenderer,
-        ModuleOptions $moduleOptions)
+        ModuleOptions $moduleOptions,
+        TransportInterface $transport)
     {
         $this->renderer     = $phpRenderer;
+        $this->transport    = $transport;
         $this->mailCharset  = $moduleOptions->getCharset();
         $this->mailEncoding = $moduleOptions->getEncoding();
     }
@@ -117,11 +122,8 @@ class MailService
             $mailMessage->getHeaders()->get('content-type')->setType('multipart/alternative');
         }
 
-        $options = new SmtpOptions();
-
         try {
-            $transport = new Smtp($options);
-            $transport->send($mailMessage);
+            $this->transport->send($mailMessage);
             return true;
         } catch (\Exception $e) {
             throw new \Exception($e);

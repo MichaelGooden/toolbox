@@ -151,5 +151,10 @@ return [
                 ]
             ]
         ],
-    ]
+    ],
+    'toolbox_mail' => [
+        'transport' => [
+            'type' => 'memory',
+        ],
+    ],
 ];
