@@ -494,5 +494,25 @@ class CurrencyMapper
             "ZWD"=> array("Zimbabwe, Zimbabwe Dollars", "5a, 24"));
     }
 
+    /**
+     * @param $currency
+     * @param $value
+     * @param bool $operator
+     * @return string
+     */
+    public function getCurrencyFormat( $currency , $value , $operator = true)
+    {
+        $symbol = $currency.' ';
+
+        if ($operator)
+        {
+            $symbol = $this->getCurrencySymbol($currency);
+        }
+
+        $value = number_format((float)$value,2);
+
+        return $symbol.$value;
+
+    }
 
 }

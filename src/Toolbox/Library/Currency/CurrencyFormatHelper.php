@@ -15,18 +15,8 @@ class CurrencyFormatHelper extends AbstractHelper {
         $this->currencyMapper = $currencyMapper;
     }
 
-    public function __invoke( $currency , $value , $operator = true)
+    public function __invoke($currency, $value, $operator = true)
     {
-        $symbol = $currency.' ';
-
-        if ($operator)
-        {
-            $symbol = $this->currencyMapper->getCurrencySymbol($currency);
-        }
-
-        $value = number_format((float)$value,2);
-
-        return $symbol.$value;
-
+        return $this->currencyMapper->getCurrencyFormat($currency ,$value ,$operator);
     }
 }
