@@ -23,7 +23,7 @@ class SessionService
         StorageInterface $storage = null
     )
     {
-        $this->storage = $storage ? : new Session('RoleBasedUserStorage');
+        $this->storage = $storage ? : new Session('UserStorage');
     }
 
     /**
