@@ -54,6 +54,8 @@ class CookieService
             );
         }
 
+        $_COOKIE[$name] = $value;
+
     }
 
     /**
