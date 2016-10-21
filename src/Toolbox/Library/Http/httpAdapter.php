@@ -2,7 +2,6 @@
 namespace Toolbox\Library\Http;
 
 use Zend\Http\Client;
-use Zend\Stdlib\Hydrator AS Hydrator;
 
 class httpAdapter extends Client
 {

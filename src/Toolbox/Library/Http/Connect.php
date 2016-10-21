@@ -2,7 +2,7 @@
 namespace Toolbox\Library\Http;
 
 use Zend\Http\Client;
-use Zend\Stdlib\Hydrator AS Hydrator;
+use Zend\Hydrator\Hydrator;
 
 class Connect extends Client
 {
@@ -45,7 +45,7 @@ class Connect extends Client
             return false;
         }
 
-        $hydrator = new \Zend\Stdlib\Hydrator\ObjectProperty;
+        $hydrator = new Hydrator\ObjectProperty;
 
         return $hydrator->extract($responseObject);
     }
@@ -101,7 +101,7 @@ class Connect extends Client
             return false;
         }
 
-        $hydrator = new \Zend\Stdlib\Hydrator\ObjectProperty;
+        $hydrator = new Hydrator\ObjectProperty;
 
         return $hydrator->extract($responseObject);
 

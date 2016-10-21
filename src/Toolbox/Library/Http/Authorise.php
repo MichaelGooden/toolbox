@@ -3,7 +3,6 @@ namespace Toolbox\Library\Http;
 
 use Zend\Http\Client;
 use Zend\Http\Response;
-use Zend\Stdlib\Hydrator AS Hydrator;
 
 class Authorise extends Client
 {
