@@ -5,6 +5,7 @@ use Interop\Container\ContainerInterface;
 use Toolbox\Library\Mail\Options\ModuleOptions;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Renderer\PhpRenderer;
 
 class MailServiceFactory implements FactoryInterface
 {
@@ -13,7 +14,7 @@ class MailServiceFactory implements FactoryInterface
         $config = $container->get('config')['toolbox_mail'];
         $transport = \Zend\Mail\Transport\Factory::create($config['transport']);
         return new MailService(
-            $container->get('viewrenderer'),
+            $container->get(PhpRenderer::class),
             $container->get(ModuleOptions::class),
             $transport
         );
