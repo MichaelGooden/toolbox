@@ -1,20 +1,15 @@
 <?php
 namespace Toolbox\Library\Countries;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class UsStatesServiceFactory implements FactoryInterface
 {
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $entityManager = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $entityManager = $container->get('Doctrine\ORM\EntityManager');
         $countriesRepository = $entityManager->getRepository('Toolbox\Entity\UsStates');
 
         return new UsStatesService(
@@ -23,4 +18,14 @@ class UsStatesServiceFactory implements FactoryInterface
         );
     }
 
-} 
+    /**
+     * Create service
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, UsStatesService::class);
+    }
+}

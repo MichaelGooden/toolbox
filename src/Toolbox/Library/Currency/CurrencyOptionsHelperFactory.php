@@ -1,18 +1,21 @@
 <?php
 namespace Toolbox\Library\Currency;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
 class CurrencyOptionsHelperFactory implements FactoryInterface
-
 {
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return new CurrencyOptionsHelper(
+            $container->get(CurrencyMapper::class)
+        );
+    }
+
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $realSL = $serviceLocator->getServiceLocator();
-
-        return new CurrencyOptionsHelper(
-            $realSL->get(CurrencyMapper::class)
-        );
+        return $this($serviceLocator->getServiceLocator(), CurrencyOptionsHelper::class);
     }
 }
