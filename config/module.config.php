@@ -90,7 +90,17 @@ return [
             'CountryNameHelper'       => CountryNameHelperFactory::class,
             'CurrencyOptionsHelper'   => CurrencyOptionsHelperFactory::class,
             'CookieHelper'            => CookieHelperFactory::class
-        ]
+        ],
+        'aliases' => [
+            'dayNameHelper' => 'DayNameHelper',
+            'notificationHelper' => 'NotificationHelper',
+            'notificationCountHelper' => 'NotificationCountHelper',
+            'currencyFormatHelper' => 'CurrencyFormatHelper',
+            'settingHelper' => 'SettingHelper',
+            'countryNameHelper' => 'CountryNameHelper',
+            'currencyOptionsHelper' => 'CurrencyOptionsHelper',
+            'cookieHelper' => 'CookieHelper',
+        ],
     ],
     'router'             => [
         'routes' => [
